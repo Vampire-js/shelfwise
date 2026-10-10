@@ -1,0 +1,27 @@
+name: shelfwise-jenkins
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: jenkins/Dockerfile
+    image: shelfwise/jenkins:local
+    restart: unless-stopped
+    environment:
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc/jenkins.yaml
+      JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER:-admin}
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD:-change-me-before-use}
+      JENKINS_URL: ${JENKINS_URL:-http://localhost:8081/}
+      GITHUB_REPOSITORY_URL: ${GITHUB_REPOSITORY_URL:?Set GITHUB_REPOSITORY_URL to the public GitHub repository URL}
+    group_add:
+      - ${DOCKER_GID:-999}
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - ./jenkins/jenkins.yaml:/var/jenkins_home/casc/jenkins.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "${JENKINS_HTTP_PORT:-8081}:8080"
+      - "50000:50000"
+
+volumes:
+  jenkins-data:

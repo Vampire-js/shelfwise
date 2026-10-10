@@ -1,0 +1,41 @@
+jenkins:
+  systemMessage: "Shelfwise CI - configured as code"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_USER}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: "${JENKINS_URL}"
+
+jobs:
+  - script: >
+      pipelineJob('shelfwise-bookstore') {
+        description('Build, test, package, and containerize Shelfwise after GitHub pushes.')
+        properties {
+          githubProjectUrl(System.getenv('GITHUB_REPOSITORY_URL'))
+        }
+        triggers {
+          githubPush()
+        }
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url(System.getenv('GITHUB_REPOSITORY_URL'))
+                }
+                branch('*/main')
+              }
+            }
+            scriptPath('Jenkinsfile')
+          }
+        }
+      }
