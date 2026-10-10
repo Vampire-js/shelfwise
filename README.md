@@ -151,7 +151,12 @@ The pipeline runs:
 3. The Vite production build.
 4. Backend, frontend, and Kubernetes archives.
 5. Backend and frontend Docker image builds and compressed image archives.
-6. Jenkins artifact archival and fingerprinting.
+6. Deployment of the successful build to the local Minikube cluster.
+7. Jenkins artifact archival and fingerprinting.
+
+The Jenkins container mounts the local kubeconfig and Minikube certificates
+read-only. Minikube must already be running, and its Docker container must be
+named `minikube`, before the deployment stage starts.
 
 Mounting `/var/run/docker.sock` gives the Jenkins container control of the host
 Docker daemon. Use a dedicated demo machine or a properly isolated Jenkins

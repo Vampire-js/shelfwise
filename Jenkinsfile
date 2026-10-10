@@ -66,6 +66,26 @@ pipeline {
         '''
       }
     }
+
+    stage('Deploy to Minikube') {
+      steps {
+        sh '''
+          docker save shelfwise/backend:${IMAGE_TAG} |
+            docker exec -i minikube ctr -n k8s.io images import -
+          docker save shelfwise/frontend:${IMAGE_TAG} |
+            docker exec -i minikube ctr -n k8s.io images import -
+
+          kubectl apply -k k8s
+          kubectl set image deployment/backend \
+            backend=shelfwise/backend:${IMAGE_TAG} -n shelfwise
+          kubectl set image deployment/frontend \
+            frontend=shelfwise/frontend:${IMAGE_TAG} -n shelfwise
+
+          kubectl rollout status deployment/backend -n shelfwise --timeout=180s
+          kubectl rollout status deployment/frontend -n shelfwise --timeout=180s
+        '''
+      }
+    }
   }
 
   post {

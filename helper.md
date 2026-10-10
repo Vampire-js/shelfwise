@@ -347,7 +347,9 @@ This allows the pipeline to build Docker images using the host Docker daemon.
 4. **Build** — creates the Vite production build.
 5. **Package artifacts** — archives frontend, backend, and Kubernetes files.
 6. **Build Docker images** — builds and exports application images.
-7. **Post actions** — archives artifacts, fingerprints them, and cleans the
+7. **Deploy to Minikube** — imports the new images, applies the manifests,
+   updates the backend and frontend image tags, and waits for both rollouts.
+8. **Post actions** — archives artifacts, fingerprints them, and cleans the
    workspace.
 
 Start Jenkins:
