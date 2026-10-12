@@ -405,6 +405,18 @@ The frontend deployment uses:
 The two replicas allow the application to keep serving traffic while one
 frontend pod is replaced.
 
+### Minikube service ports
+
+The Kubernetes services are exposed through fixed NodePorts:
+
+| Service | NodePort |
+|---|---:|
+| Frontend | `30088` |
+| Prometheus | `30090` |
+| Grafana | `30091` |
+
+Access them using the IP returned by `minikube ip`.
+
 ### Kustomize
 
 `k8s/kustomization.yaml` groups all Kubernetes resources.
@@ -521,7 +533,7 @@ Important metrics:
 Open:
 
 ```text
-http://localhost:9090
+http://<minikube-ip>:30090
 ```
 
 ## Grafana
@@ -550,7 +562,7 @@ Dashboard panels include:
 Open:
 
 ```text
-http://localhost:3001
+http://<minikube-ip>:30091
 ```
 
 Default local credentials are `admin` / `admin` unless changed in `.env`.
@@ -572,12 +584,22 @@ Run:
 
 ## Main demonstration commands
 
+Start the complete environment after restarting the machine:
+
+```bash
+./scripts/start-all.sh
+```
+
+This starts Minikube, the Compose application and monitoring stack, Kubernetes,
+Jenkins, and the Tailscale Funnel in the required order. It also waits for
+readiness and prints every local and Minikube URL.
+
 ```bash
 # Application stack
 docker compose up -d
 
 # Jenkins
-GITHUB_REPOSITORY_URL=https://github.com/Vampire-js/shelwise.git \
+GITHUB_REPOSITORY_URL=https://github.com/Vampire-js/shelfwise \
 DOCKER_GID=$(stat -c '%g' /var/run/docker.sock) \
 docker compose -f jenkins-compose.yml up -d
 

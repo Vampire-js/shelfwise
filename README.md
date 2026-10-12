@@ -30,6 +30,24 @@ stateless frontend uses two replicas for the recovery demonstration.
 - `kubectl` and Minikube for the Kubernetes exercise
 - A GitHub repository accessible to Jenkins
 
+## Start everything
+
+After Docker, Minikube, Kubernetes, and Tailscale are configured, start the
+complete demonstration with:
+
+```bash
+./scripts/start-all.sh
+```
+
+The script starts Minikube first, then the Compose application stack,
+Kubernetes resources, Jenkins, and the Tailscale Funnel. It waits for every
+service to become ready and prints all URLs. If Docker requires `sudo`, the
+script requests the password once. To start without the public webhook Funnel:
+
+```bash
+START_FUNNEL=0 ./scripts/start-all.sh
+```
+
 ## Run locally
 
 ```bash
@@ -81,11 +99,12 @@ chmod +x scripts/*.sh
 minikube service frontend -n shelfwise
 ```
 
-Open the monitoring services in separate terminals:
+Open the Kubernetes services directly through Minikube:
 
 ```bash
-kubectl port-forward -n shelfwise service/prometheus 9090:9090
-kubectl port-forward -n shelfwise service/grafana 3001:3000
+echo "Bookstore:  http://$(minikube ip):30088"
+echo "Prometheus: http://$(minikube ip):30090"
+echo "Grafana:    http://$(minikube ip):30091"
 ```
 
 If Minikube was installed in `~/.local/bin` and that directory is not on your

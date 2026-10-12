@@ -23,4 +23,5 @@ kubectl rollout status deployment/prometheus -n shelfwise --timeout=120s
 kubectl rollout status deployment/grafana -n shelfwise --timeout=180s
 
 printf '\nShelfwise is ready. Open it with:\n  %s service frontend -n shelfwise\n' "$minikube_bin"
-printf 'Grafana: kubectl port-forward -n shelfwise service/grafana 3001:3000\n'
+printf 'Prometheus: http://%s:30090\n' "$("$minikube_bin" ip)"
+printf 'Grafana: http://%s:30091\n' "$("$minikube_bin" ip)"
