@@ -195,17 +195,33 @@ export default function App() {
           </label>
         </div>
 
-        <div className="filters" aria-label="Filter by category">
-          {categories.map((item) => (
-            <button
-              className={category === item ? "active" : ""}
-              key={item}
-              type="button"
-              onClick={() => setCategory(item)}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="catalog-toolbar">
+          <div className="filters" aria-label="Filter by category">
+            {categories.map((item) => (
+              <button
+                className={category === item ? "active" : ""}
+                key={item}
+                type="button"
+                onClick={() => setCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className="results-summary" aria-live="polite">
+            <span>Showing <strong>{visibleBooks.length}</strong> of {books.length} titles</span>
+            {(query || category !== "All") && (
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setCategory("All");
+                }}
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
         </div>
 
         {error && <div className="error" role="alert">{error}</div>}

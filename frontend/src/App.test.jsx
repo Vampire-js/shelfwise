@@ -47,6 +47,11 @@ describe("App", () => {
 
     expect(screen.queryAllByText("Clean Code")).toHaveLength(0);
     expect(screen.getAllByText("Kubernetes: Up & Running").length).toBeGreaterThan(0);
+    expect(screen.getByText(/showing/i)).toHaveTextContent("Showing 1 of 2 titles");
+
+    fireEvent.click(screen.getByRole("button", { name: /clear filters/i }));
+    expect(screen.getAllByText("Clean Code").length).toBeGreaterThan(0);
+    expect(screen.getByPlaceholderText(/search title/i)).toHaveValue("");
   });
 
   it("updates stock", async () => {
