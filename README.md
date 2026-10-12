@@ -196,3 +196,7 @@ the Jenkins GitHub webhook and produces a traceable set of build artifacts.
 
 Stock is updated through `PATCH /api/books/:id/stock` with a JSON body such as
 `{"change":-1}`. The metric gauge is updated in the same request.
+
+### DevOps Integration
+
+Shelfwise Bookstore is a full-stack web application built using React, Vite, Node.js, and Express for managing and browsing books. The project integrates Jenkins for automated continuous integration and deployment (CI/CD), enabling dependency installation, backend and frontend testing, production builds, artifact packaging, and Docker image creation. Docker provides containerized application environments, while Kubernetes (Minikube) manages application deployments and rollout verification. GitHub webhooks, exposed through a secure public tunnel, enable Jenkins to receive repository events and trigger automated pipelines. Prometheus and Grafana support application monitoring and metric visualization, providing an integrated DevOps environment for building, testing, deploying, and observing the application.
