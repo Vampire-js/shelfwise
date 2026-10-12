@@ -7,6 +7,17 @@ const stockLabel = (stock) => {
   return "In stock";
 };
 
+const getInitialTheme = () => {
+  const savedTheme = localStorage.getItem("shelfwise-theme");
+  if (savedTheme === "light" || savedTheme === "dark") {
+    return savedTheme;
+  }
+
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
 function BookCard({ book, pending, onStockChange }) {
   return (
     <article className="book-card">
@@ -65,12 +76,18 @@ export default function App() {
   const [category, setCategory] = useState("All");
   const [pendingId, setPendingId] = useState(null);
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
     getBooks()
       .then(({ books: catalog }) => setBooks(catalog))
       .catch((requestError) => setError(requestError.message));
   }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("shelfwise-theme", theme);
+  }, [theme]);
 
   const categories = useMemo(
     () => ["All", ...new Set(books.map((book) => book.category))],
@@ -118,7 +135,18 @@ export default function App() {
           <a href="#catalog">Catalog</a>
           <a href="#operations">Operations</a>
         </nav>
-        <span className="live-badge"><i /> System live</span>
+        <div className="header-actions">
+          <span className="live-badge"><i /> System live</span>
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+            aria-pressed={theme === "dark"}
+            onClick={() => setTheme((current) => current === "light" ? "dark" : "light")}
+          >
+            <span aria-hidden="true">{theme === "light" ? "☾" : "☀"}</span>
+          </button>
+        </div>
       </header>
 
       <section className="hero">

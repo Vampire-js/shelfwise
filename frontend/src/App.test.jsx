@@ -27,6 +27,8 @@ const books = [
 
 afterEach(() => {
   vi.restoreAllMocks();
+  localStorage.clear();
+  delete document.documentElement.dataset.theme;
 });
 
 describe("App", () => {
@@ -68,5 +70,20 @@ describe("App", () => {
       "/api/books/clean-code/stock",
       expect.objectContaining({ method: "PATCH" })
     );
+  });
+
+  it("switches to dark theme and remembers the choice", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => ({ books })
+    });
+
+    render(<App />);
+    const toggle = screen.getByRole("button", { name: /switch to dark theme/i });
+    fireEvent.click(toggle);
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("shelfwise-theme")).toBe("dark");
+    expect(screen.getByRole("button", { name: /switch to light theme/i })).toBeInTheDocument();
   });
 });
