@@ -126,6 +126,10 @@ export default function App() {
 
   return (
     <main>
+      <div className="announcement">
+        <span>Free delivery on engineering essentials</span>
+        <span className="announcement-detail">Built for readers who ship</span>
+      </div>
       <header className="site-header">
         <a className="brand" href="/" aria-label="Shelfwise home">
           <span className="brand-icon">S</span>
@@ -158,6 +162,11 @@ export default function App() {
             containerized platform built to stay available.
           </p>
           <a className="primary-action" href="#catalog">Explore the collection <span>→</span></a>
+          <div className="hero-tags" aria-label="Store highlights">
+            <span>Curated titles</span>
+            <span>Live inventory</span>
+            <span>DevOps powered</span>
+          </div>
         </div>
         <div className="hero-panel" id="operations">
           <div className="metric">
