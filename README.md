@@ -39,7 +39,7 @@ complete demonstration with:
 ./scripts/start-all.sh
 ```
 
-The script starts Minikube first, then the Compose application stack,
+The script initiates at Minikube, then the Compose application stack,
 Kubernetes resources, Jenkins, and the Tailscale Funnel. It waits for every
 service to become ready and prints all URLs. If Docker requires `sudo`, the
 script requests the password once. To start without the public webhook Funnel:
