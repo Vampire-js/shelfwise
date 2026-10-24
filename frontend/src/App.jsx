@@ -154,8 +154,6 @@ export default function App() {
           <p className="kicker">A modern engineering library</p>
           <h1>Build better systems.<br /><em>One page at a time.</em></h1>
           <p className="hero-description">
-            A curated catalog for curious engineers, backed by an observable,
-            containerized platform built to stay available.
           </p>
           <a className="primary-action" href="#catalog">Explore the collection <span>→</span></a>
         </div>
