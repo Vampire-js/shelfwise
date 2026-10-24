@@ -160,7 +160,7 @@ agent; do not use this pattern for an untrusted multi-tenant controller.
 ## Git demonstration
 
 Use a feature-branch workflow so every pipeline run maps to versioned source:
-
+ 
 ```bash
 git init
 git add .
